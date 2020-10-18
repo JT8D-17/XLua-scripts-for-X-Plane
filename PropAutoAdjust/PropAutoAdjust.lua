@@ -1,6 +1,6 @@
 --[[
 PropAutoAdjust for X-Plane 11+ and XLua
-Based on an idea by xx yyy
+Based on an idea by Gary Hensley
 
 Licensed under the EUPL v1.2: https://eupl.eu/1.2/en/
 
