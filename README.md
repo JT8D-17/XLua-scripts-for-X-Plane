@@ -14,11 +14,11 @@ Various XLua scripts for use in [X-Plane](https://www.x-plane.com/).
 
 ## Notes about the scripts
 
-Documentation about each script can be found in the respective folder.
+Documentation about each script can be found in its respective folder.
 
 Some ground rules regarding XLua scripts:
 
-- Scripts can be reloaded with the _"Developer"_ --> _"Reload the Current Aircraft"_ menu option in X-Plane
+- Scripts can be reloaded with the _"Developer"_ --> _"Reload the Current Aircraft"_ menu option in X-Plane (with or without art reload)
 - There is no developer console output by default. If you need debug output, start X-Plane from the console or a terminal and read it there
 - For developer console output, you will need to compile and use [this XLua fork](https://github.com/aeroc7/XLua) instead of the default one and replace the "print" statements in the scripts with "log"
 - The only place to actively get XLua support and scripting help is [in the thread on the X-Plane.org forums](https://forums.x-plane.org/index.php?/forums/topic/154351-xlua-scripting/)
@@ -38,7 +38,7 @@ If no, proceed with step 2.
 
 4. Copy the folder into the _"[Aircraft folder]/plugins/xlua"_ folder of the aircraft.
 
-5. Run X-Plane. Activate debug output (see note above and each script's readme on what to edit)
+5. Run X-Plane. Activate debug output (see note above and each script's readme on what to edit) if you need to make sure that the script is running.
 
 &nbsp;
 
