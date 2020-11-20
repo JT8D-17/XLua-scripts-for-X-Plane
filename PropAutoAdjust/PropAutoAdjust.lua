@@ -11,6 +11,21 @@ Proportional control/gain: Error amount determines amount of corrective output
 Integral control/gain: Tries to eliminate error and residual steady state error as quickly as possible
 Derivative control/gain: Tries to minimize error rate, used for dampening overshoots
 ]]
+ffi = require ("ffi") -- LuaJIT FFI module
+dofile("SDK_303_XPLM/FFI.XPLM.Init.lua") --[[ XPLM initialization script ]]
+dofile("SDK_303_XPLM/FFI.XPLMDefs.lua")
+dofile("SDK_303_XPLM/FFI.XPLMUtilities.lua")
+dofile("SDK_303_XPLM/FFI.XPLMMenus.lua")    --[[ REQUIRES FFI.XPLMDefs.lua and FFI.XPLMUtilities.lua ]]
+dofile("SDK_303_XPLM/FFI.XPLMDisplay.lua")  --[[ REQUIRES FFI.XPLMDefs.lua ]]
+dofile("SDK_303_XPLM/FFI.XPLMGraphics.lua") --[[ REQUIRES FFI.XPLMDefs.lua ]]
+dofile("SDK_303_XPWidgets/FFI.XPWidgets.Init.lua")          --[[ XPWidgets initialization script ]]
+dofile("SDK_303_XPWidgets/FFI.XPWidgetDefs.lua")            --[[ REQUIRES FFI.XPLMDefs.lua ]]
+dofile("SDK_303_XPWidgets/FFI.XPStandardWidgets.lua")       --[[ REQUIRES FFI.XPWidgetDefs.lua ]]
+dofile("SDK_303_XPWidgets/FFI.XPUIGraphics.lua")            --[[ REQUIRES FFI.XPWidgetDefs.lua ]]
+dofile("SDK_303_XPWidgets/FFI.XPWidgets.lua")               --[[ REQUIRES FFI.XPWidgetDefs.lua, XPLMDisplay.lua ]]
+dofile("SDK_303_XPWidgets/FFI.XPWidgetUtils.lua")           --[[ REQUIRES FFI.XPWidgetDefs.lua ]]
+dofile("PropAutoAdjust.Menu.lua")
+dofile("PropAutoAdjust.Widget.lua")
 --[[ End-user configuration ]]
 RPM_max = 2300            -- Maximum RPM
 RPM_min = 850             -- Minimum RPM
@@ -20,6 +35,7 @@ I_gain = 0.0075           -- Integral gain
 D_gain = 0.005            -- Derivative gain
 Prop_limits = {0.0,1.0}   -- Prop lever limits (low,high)
 Debug_Output = false      -- Prints debug output to console
+Script_Name = "PropAutoAdjust"
 --[[ 
 
 DATAREFS 
@@ -47,6 +63,7 @@ P_output = {}           -- Proportional output
 I_output = {}           -- Integral output
 D_output = {}           -- Derivative output
 PID_output = {}         -- Combined PID output
+--XPLM = nil            -- Define namespace for XPLM library
 --[[ 
 
 FUNCTIONS
@@ -61,7 +78,7 @@ function PropAutoAdjustInit()
         RPM_time_prev[i] = os.clock()   -- Init timer table
     end
     Log_time_prev = os.clock()
-    print("PropAutoAdjust initialized!\n")
+    print("PropAutoAdjust initialized!")
 end
 --[[ Get previous RPM error ]]
 function Prev_RPM_Error(engindex)
@@ -112,9 +129,16 @@ X-PLANE WRAPPERS
 -- 1: Aircraft loading
 --[[function aircraft_load()
 end]]
+function aircraft_unload()
+    print("UNLOADING")
+end
 -- 2: Flight start
 function flight_start()
+    Init_FFI_XPLM()         -- XPLM initialization function
+    Init_FFI_XPWidgets()    -- XPWidgets initialization function
     PropAutoAdjustInit()
+    Menu_Init()
+    Widget_Init()
 end
 -- 3: Flight crash
 --[[function flight_crash() 
@@ -126,3 +150,8 @@ end]]
 function after_physics()
     PropAutoAdjust()
 end
+--[[
+
+SUBMODULES
+
+]]
